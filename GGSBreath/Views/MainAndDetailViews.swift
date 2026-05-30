@@ -4,13 +4,13 @@ import SwiftUI
 struct MainMenuView: View {
     let practices = [
         BreathingPractice(
-            title: "Спокойствие", duration: "5 мин", cycles: "14 циклов",
+            title: "Спокойствие", duration: "5 мин", cycles: "16 циклов",
             purpose: "Помогает быстро снять тревогу и успокоить нервную систему",
             technique: "Вдох на 4 сек, задержка на 7 сек, медленный выдох на 8 сек.",
             color: .blueGGS
         ),
         BreathingPractice(
-            title: "Энергия", duration: "3 мин", cycles: "10 циклов",
+            title: "Энергия", duration: "3 мин", cycles: "60 циклов",
             purpose: "Вместо второй чашки кофе. Помогает проснуться или взбодриться.",
             technique: "Активное дыхание (2 сек вдох — 1 сек выдох, быстрый цикл).",
             color: .redGGS
@@ -22,7 +22,7 @@ struct MainMenuView: View {
             color: .purpleGGS
         ),
         BreathingPractice(
-            title: "Сон", duration: "10 мин", cycles: "25 циклов",
+            title: "Сон", duration: "10 мин", cycles: "50 циклов",
             purpose: "Глубоко расслабляет тело и ум, отключает мысли и подготавливает ко сну.",
             technique: "Равный вдох на 4 сек и удлиненный, медленный выдох на 8 сек.",
             color: .darkBlueGGS
@@ -78,6 +78,8 @@ struct PracticeRowView: View {
 
 // MARK: - DetailPracticeScreen
 struct DetailPracticeView: View {
+    @State private var isPresentingSession = false
+    
     let practice: BreathingPractice
     @Environment(\.dismiss) var dismiss
     
@@ -149,8 +151,7 @@ struct DetailPracticeView: View {
                 Spacer()
                 
                 Button(action: {
-                    // Сюда мы добавим переход на сам экран дыхания с таймером
-                    print("Запуск практики: \(practice.title)")
+                    isPresentingSession = true
                 }) {
                     Text("Дышать")
                         .font(.sfRounded(size: 24, weight: .bold))
@@ -162,8 +163,11 @@ struct DetailPracticeView: View {
                         .padding(.horizontal, 74)
                 }
                 .padding(.bottom, 40)
+                .fullScreenCover(isPresented: $isPresentingSession) {
+                    SessionPracticeView(viewModel: PracticeViewModel(practice: practice))
+                }
             }
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
