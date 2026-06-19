@@ -1,12 +1,5 @@
 import SwiftUI
 
-struct OnboardingPage: Identifiable {
-    let id = UUID()
-    let title: String
-    let subtitle: String
-    let pageIndex: Int
-}
-
 struct BreathingPractice: Identifiable {
     let id = UUID()
     let title: String
