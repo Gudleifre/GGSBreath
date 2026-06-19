@@ -4,6 +4,7 @@ import Combine
 enum SessionState {
     case countdown
     case breathing
+    case pausedDuringCountdown
     case paused
     case completed
 }
@@ -85,13 +86,21 @@ class PracticeViewModel: ObservableObject {
     }
     
     func pauseSession() {
-        sessionState = .paused
+        if sessionState == .countdown {
+            sessionState = .pausedDuringCountdown
+        } else {
+            sessionState = .paused
+        }
         timer?.cancel()
         HapticManager.shared.triggerImpact(style: .light)
     }
     
     func resumeSession() {
-        sessionState = (countdownCount > 0) ? .countdown : .breathing
+        if sessionState == .pausedDuringCountdown {
+            sessionState = .countdown
+        } else {
+            sessionState = .breathing
+        }
         startSession()
         HapticManager.shared.triggerImpact(style: .light)
     }

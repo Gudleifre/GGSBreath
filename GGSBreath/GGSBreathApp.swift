@@ -2,14 +2,21 @@ import SwiftUI
 
 @main
 struct GGSBreathApp: App {
-    @AppStorage("shouldShowOnboarding") private var shouldShowOnboarding: Bool = true
+    @State private var showSplash: Bool = true
     
     var body: some Scene {
         WindowGroup {
-            if shouldShowOnboarding {
-                OnboardingContainerView(shouldShowOnboarding: $shouldShowOnboarding)
-            } else {
+            ZStack {
                 MainMenuView()
+                
+                if showSplash {
+                    SplashScreenView(onFinished: {
+                        withAnimation(.easeOut(duration: 1.4)) {
+                            showSplash = false
+                        }
+                    })
+                    .transition(.opacity)
+                }
             }
         }
     }

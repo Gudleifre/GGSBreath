@@ -34,7 +34,8 @@ struct SessionPracticeView: View {
                 
                 // Central part
                 ZStack {
-                    if viewModel.sessionState == .countdown {
+                    if viewModel.sessionState == .countdown ||
+                        viewModel.sessionState == .pausedDuringCountdown {
                         Text("\(viewModel.countdownCount)")
                             .font(.sfRounded(size: 90, weight: .bold))
                             .foregroundColor(.whiteGGS)
@@ -70,11 +71,15 @@ struct SessionPracticeView: View {
                 
                 // Information block
                 VStack(spacing: 12) {
-                    Text(viewModel.sessionState == .countdown ? "Приготовьтесь" : (viewModel.sessionState == .completed ? "Отличная работа!" : viewModel.currentPhase.rawValue))
-                        .font(.sfRounded(size: 20, weight: .bold))
-                        .foregroundColor(.whiteGGS)
-                        .multilineTextAlignment(.center)
-                        .id(viewModel.currentPhase)
+                    Text(
+                        (viewModel.sessionState == .countdown || viewModel.sessionState == .pausedDuringCountdown)
+                        ? "Приготовьтесь"
+                        : (viewModel.sessionState == .completed ? "Отличная работа!" : viewModel.currentPhase.rawValue))
+                    .font(.sfRounded(size: 20, weight: .bold)
+                    )
+                    .foregroundColor(.whiteGGS)
+                    .multilineTextAlignment(.center)
+                    .id(viewModel.currentPhase)
                     
                     Text("Цикл: \(viewModel.currentCycle) из \(viewModel.maxCycles)")
                         .font(.sfRounded(size: 16, weight: .medium))
@@ -96,13 +101,13 @@ struct SessionPracticeView: View {
                     }
                     
                     Button(action: {
-                        if viewModel.sessionState == .paused {
+                        if viewModel.sessionState == .paused || viewModel.sessionState == .pausedDuringCountdown {
                             viewModel.resumeSession()
                         } else {
                             viewModel.pauseSession()
                         }
                     }) {
-                        Image(systemName: viewModel.sessionState == .paused ? "play.fill" : "pause.fill")
+                        Image(systemName: (viewModel.sessionState == .paused || viewModel.sessionState == .pausedDuringCountdown) ? "play.fill" : "pause.fill")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(viewModel.practice.color)
                             .frame(width: 76, height: 76)
