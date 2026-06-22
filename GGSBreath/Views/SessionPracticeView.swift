@@ -4,6 +4,10 @@ struct SessionPracticeView: View {
     @StateObject var viewModel: PracticeViewModel
     @Environment(\.dismiss) var dismiss
     
+    @State private var circlesOpacity: Double = 0.0
+    @State private var circlesScale: CGFloat = 0.8
+    @State private var showCheckmark: Bool = false
+    
     var body: some View {
         ZStack {
             viewModel.practice.color.ignoresSafeArea()
@@ -14,7 +18,11 @@ struct SessionPracticeView: View {
                     Text(viewModel.formatTotalTime())
                         .font(.sfRounded(size: 16, weight: .bold))
                         .foregroundColor(.whiteGGS)
+                        .opacity(viewModel.sessionState == .completed ? 0.0 : 1.0)
+                        .animation(.easeInOut(duration: 0.5), value: viewModel.sessionState)
+                    
                     Spacer()
+                    
                     Button(action: {
                         viewModel.endSession()
                         dismiss()
@@ -40,7 +48,16 @@ struct SessionPracticeView: View {
                             .font(.sfRounded(size: 90, weight: .bold))
                             .foregroundColor(.whiteGGS)
                             .transition(.scale.combined(with: .opacity))
-                    } else {
+                    }
+                    if showCheckmark {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 100, weight: .light))
+                            .foregroundColor(.whiteGGS)
+                            .transition(.scale(scale: 0.8).combined(with: .opacity))
+                        
+                    }
+                    if viewModel.sessionState != .countdown && viewModel.sessionState != .pausedDuringCountdown {
+                        
                         ZStack {
                             Circle()
                                 .fill(Color.whiteGGS.opacity(0.15))
@@ -63,9 +80,30 @@ struct SessionPracticeView: View {
                                 .frame(width: 314, height: 314)
                                 .rotationEffect(.degrees(-90))
                         }
+                        .opacity(circlesOpacity)
+                        .scaleEffect(circlesScale)
+                        .onAppear {
+                            withAnimation(.easeOut(duration: 0.8)) {
+                                circlesOpacity = 1.0
+                                circlesScale = 1.0
+                            }
+                        }
                     }
                 }
                 .frame(height: 340)
+                .onChange(of: viewModel.sessionState) { oldValue, newValue in
+                    if newValue == .completed {
+                        withAnimation(.easeIn(duration: 1.2)) {
+                            circlesOpacity = 0.0
+                            circlesScale = 0.3
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                            withAnimation(.easeOut(duration: 0.8)) {
+                                showCheckmark = true
+                            }
+                        }
+                    }
+                }
                 
                 Spacer()
                 
@@ -84,6 +122,8 @@ struct SessionPracticeView: View {
                     Text("Цикл: \(viewModel.currentCycle) из \(viewModel.maxCycles)")
                         .font(.sfRounded(size: 16, weight: .medium))
                         .foregroundColor(.whiteGGS.opacity(0.7))
+                        .opacity(viewModel.sessionState == .completed ? 0.0 : 1.0)
+                        .animation(.easeInOut, value: viewModel.sessionState)
                 }
                 .padding(.horizontal, 40)
                 
@@ -91,14 +131,17 @@ struct SessionPracticeView: View {
                 
                 // Control panel
                 HStack(spacing: 40) {
-                    Button(action: { viewModel.restartSession() }) {
-                        Image(systemName: "arrow.clockwise")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.whiteGGS)
-                            .frame(width: 56, height: 56)
-                            .background(Color.whiteGGS.opacity(0.2))
-                            .clipShape(Circle())
-                    }
+                    Button(action: {
+                        circlesOpacity = 0.0
+                        circlesScale = 0.8
+                        viewModel.restartSession() }) {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.whiteGGS)
+                                .frame(width: 56, height: 56)
+                                .background(Color.whiteGGS.opacity(0.2))
+                                .clipShape(Circle())
+                        }
                     
                     Button(action: {
                         if viewModel.sessionState == .paused || viewModel.sessionState == .pausedDuringCountdown {
@@ -118,6 +161,8 @@ struct SessionPracticeView: View {
                     Spacer().frame(width: 56, height: 56)
                 }
                 .padding(.bottom, 40)
+                .opacity(viewModel.sessionState == .completed ? 0.0 : 1.0)
+                .animation(.easeInOut, value: viewModel.sessionState)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -129,6 +174,10 @@ struct SessionPracticeView: View {
     private func currentMiddleCircleSize() -> CGFloat {
         let minSize: CGFloat = 96
         let maxSize: CGFloat = 302
+        
+        if viewModel.sessionState == .completed {
+            return minSize
+        }
         
         switch viewModel.currentPhase {
         case .inhale:
