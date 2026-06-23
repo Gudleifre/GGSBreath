@@ -2,6 +2,8 @@ import SwiftUI
 
 // MARK: - MainScreen
 struct MainMenuView: View {
+    @State private var selectedPractice: BreathingPractice? = nil
+    
     let practices = [
         BreathingPractice(
             title: "Спокойствие", duration: "5 мин", cycles: "16 циклов",
@@ -30,31 +32,34 @@ struct MainMenuView: View {
     ]
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                HStack(spacing: 2) {
-                    Text("G.G.S").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.whiteGGS)
-                    Text("|").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.blueGGS)
-                    Text("Breath").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.whiteGGS)
-                }
-                .padding(.top, 20)
-                .padding(.bottom, 30)
-                
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        ForEach(practices) { practice in
-                            NavigationLink(destination: DetailPracticeView(practice: practice)) {
-                                PracticeRowView(practice: practice)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 60)
-                }
+        VStack(spacing: 0) {
+            HStack(spacing: 2) {
+                Text("G.G.S").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.whiteGGS)
+                Text("|").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.blueGGS)
+                Text("Breath").font(.sfRounded(size: 20, weight: .bold)).foregroundColor(.whiteGGS)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.blackGGS.ignoresSafeArea())
+            .padding(.top, 20)
+            .padding(.bottom, 30)
+            
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 16) {
+                    ForEach(practices) { practice in
+                        Button(action: {
+                            selectedPractice = practice
+                        }) {
+                            PracticeRowView(practice: practice)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 40)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.blackGGS.ignoresSafeArea())
+        .sheet(item: $selectedPractice) { practice in
+            DetailPracticeView(practice: practice)
         }
     }
 }
@@ -79,7 +84,6 @@ struct PracticeRowView: View {
 // MARK: - DetailPracticeScreen
 struct DetailPracticeView: View {
     @State private var isPresentingSession = false
-    
     let practice: BreathingPractice
     @Environment(\.dismiss) var dismiss
     
@@ -95,7 +99,7 @@ struct DetailPracticeView: View {
             VStack(spacing: 0) {
                 HStack {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: "chevron.down")
                             .font(.system(size: 22, weight: .semibold))
                             .foregroundColor(.whiteGGS)
                             .padding(.vertical, 10)
@@ -103,11 +107,12 @@ struct DetailPracticeView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 20)
                 
                 Text(practice.title)
                     .font(.sfRounded(size: 36, weight: .bold))
                     .foregroundColor(.whiteGGS)
-                    .padding(.top, 80)
+                    .padding(.top, 60)
                 
                 Spacer()
                 
@@ -167,7 +172,6 @@ struct DetailPracticeView: View {
                     SessionPracticeView(viewModel: PracticeViewModel(practice: practice))
                 }
             }
-            .navigationBarBackButtonHidden(true)
         }
     }
 }

@@ -7,5 +7,5 @@ struct BreathingPractice: Identifiable {
     let cycles: String
     let purpose: String
     let technique: String
-    let color: Color   
+    let color: Color
 }

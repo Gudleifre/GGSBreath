@@ -58,7 +58,7 @@ class PracticeViewModel: ObservableObject {
             targetMinutes = 3.0
         case "Фокус":
             inhaleDuration = 4.0; holdInDuration = 4.0; exhaleDuration = 4.0; holdOutDuration = 4.0
-            targetMinutes = 4.0
+            targetMinutes = 0.15
         case "Сон":
             inhaleDuration = 4.0; holdInDuration = 0.0; exhaleDuration = 8.0; holdOutDuration = 0.0
             targetMinutes = 10.0
