@@ -111,8 +111,9 @@ struct SessionPracticeView: View {
                 VStack(spacing: 12) {
                     Text(
                         (viewModel.sessionState == .countdown || viewModel.sessionState == .pausedDuringCountdown)
-                        ? "Приготовьтесь"
-                        : (viewModel.sessionState == .completed ? "Отличная работа!" : viewModel.currentPhase.rawValue))
+                        ? LocalizedStringKey("Приготовьтесь")
+                        : (viewModel.sessionState == .completed ? LocalizedStringKey("Отличная работа!") : viewModel.currentPhase.localizedTitle)
+                    )
                     .font(.sfRounded(size: 20, weight: .bold)
                     )
                     .foregroundColor(.whiteGGS)

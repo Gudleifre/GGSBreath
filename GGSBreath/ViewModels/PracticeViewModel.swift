@@ -9,11 +9,27 @@ enum SessionState {
     case completed
 }
 
+//enum BreathingPhase: String {
+//    case inhale = "Вдохните через нос"
+//    case holdIn = "Задержка на вдохе"
+//    case exhale = "Выдохните через рот"
+//    case holdOut = "Задержка на выдохе"
+//}
 enum BreathingPhase: String {
-    case inhale = "Вдохните через нос"
-    case holdIn = "Задержка на вдохе"
-    case exhale = "Выдохните через рот"
-    case holdOut = "Задержка на выдохе"
+    case inhale
+    case holdIn
+    case exhale
+    case holdOut
+    
+    // Вычисляемое свойство возвращает ключ локализации
+    var localizedTitle: LocalizedStringKey {
+        switch self {
+        case .inhale: return "Вдохните через нос"
+        case .holdIn: return "Задержка на вдохе"
+        case .exhale: return "Выдохните через рот"
+        case .holdOut: return "Задержка на выдохе"
+        }
+    }
 }
 
 class PracticeViewModel: ObservableObject {

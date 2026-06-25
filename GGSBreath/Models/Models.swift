@@ -2,10 +2,10 @@ import SwiftUI
 
 struct BreathingPractice: Identifiable {
     let id = UUID()
-    let title: String
-    let duration: String
-    let cycles: String
-    let purpose: String
-    let technique: String
+    let title: LocalizedStringKey
+    let duration: LocalizedStringKey
+    let cycles: LocalizedStringKey
+    let purpose: LocalizedStringKey
+    let technique: LocalizedStringKey
     let color: Color
 }
