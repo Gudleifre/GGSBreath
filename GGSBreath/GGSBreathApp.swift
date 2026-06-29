@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct GGSBreathApp: App {
@@ -10,15 +11,11 @@ struct GGSBreathApp: App {
             ZStack {
                 TabView(selection: $selectedTab) {
                     MainMenuView()
-                        .tabItem {
-                            Label("", systemImage: "lungs.fill")
-                        }
+                        .tabItem { Image(systemName: "lungs.fill") }
                         .tag(0)
                     
                     StatisticsView()
-                        .tabItem {
-                            Label("", systemImage: "chart.bar.fill")
-                        }
+                        .tabItem { Image(systemName: "chart.bar.fill") }
                         .tag(1)
                 }
                 .accentColor(.blueGGS)
@@ -39,6 +36,7 @@ struct GGSBreathApp: App {
                 }
             }
         }
+        .modelContainer(for: BreathingHistory.self)
     }
 }
 
