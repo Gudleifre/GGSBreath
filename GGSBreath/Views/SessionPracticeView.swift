@@ -3,6 +3,7 @@ import SwiftUI
 struct SessionPracticeView: View {
     @StateObject var viewModel: PracticeViewModel
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
     
     @State private var circlesOpacity: Double = 0.0
     @State private var circlesScale: CGFloat = 0.8
@@ -93,6 +94,7 @@ struct SessionPracticeView: View {
                 .frame(height: 340)
                 .onChange(of: viewModel.sessionState) { oldValue, newValue in
                     if newValue == .completed {
+                        viewModel.saveSession(context: modelContext)
                         withAnimation(.easeIn(duration: 1.2)) {
                             circlesOpacity = 0.0
                             circlesScale = 0.3

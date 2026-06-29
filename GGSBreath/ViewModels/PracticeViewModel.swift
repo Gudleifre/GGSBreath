@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import SwiftData
 
 enum SessionState {
     case countdown
@@ -9,19 +10,12 @@ enum SessionState {
     case completed
 }
 
-//enum BreathingPhase: String {
-//    case inhale = "Вдохните через нос"
-//    case holdIn = "Задержка на вдохе"
-//    case exhale = "Выдохните через рот"
-//    case holdOut = "Задержка на выдохе"
-//}
 enum BreathingPhase: String {
     case inhale
     case holdIn
     case exhale
     case holdOut
     
-    // Вычисляемое свойство возвращает ключ локализации
     var localizedTitle: LocalizedStringKey {
         switch self {
         case .inhale: return "Вдохните через нос"
@@ -33,6 +27,7 @@ enum BreathingPhase: String {
 }
 
 class PracticeViewModel: ObservableObject {
+    
     let practice: BreathingPractice
     
     @Published var sessionState: SessionState = .countdown
@@ -68,13 +63,13 @@ class PracticeViewModel: ObservableObject {
         switch practice.title {
         case "Спокойствие":
             inhaleDuration = 4.0; holdInDuration = 7.0; exhaleDuration = 8.0; holdOutDuration = 0.0
-            targetMinutes = 5.0
+            targetMinutes = 5.0 
         case "Энергия":
             inhaleDuration = 2.0; holdInDuration = 0.0; exhaleDuration = 1.0; holdOutDuration = 0.0
             targetMinutes = 3.0
         case "Фокус":
             inhaleDuration = 4.0; holdInDuration = 4.0; exhaleDuration = 4.0; holdOutDuration = 4.0
-            targetMinutes = 0.15
+            targetMinutes = 4.0
         case "Сон":
             inhaleDuration = 4.0; holdInDuration = 0.0; exhaleDuration = 8.0; holdOutDuration = 0.0
             targetMinutes = 10.0
@@ -136,6 +131,18 @@ class PracticeViewModel: ObservableObject {
     
     func endSession() {
         timer?.cancel()
+    }
+    
+    func saveSession(context: ModelContext) {
+        let newRecord = BreathingHistory(
+            durationInMinutes: Int(practice.duration.replacingOccurrences(of: " мин", with: "")) ?? 5,
+            practiceTitle: practice.title
+        )
+        
+        context.insert(newRecord)
+        
+        try? context.save()
+        print("Сессия успешно сохранена в SwiftData!")
     }
     
     private func gameTick() {
