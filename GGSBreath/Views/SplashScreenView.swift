@@ -34,7 +34,7 @@ struct SplashScreenView: View {
                         .opacity(isAnimating ? 1.0 : 0.0)
                 }
                 
-                Text("Ничего лишнего, только дыхание")
+                Text("Nothing extra, just breathing")
                     .font(.sfRounded(size: 16, weight: .medium))
                     .foregroundColor(.whiteGGS.opacity(0.8))
                     .multilineTextAlignment(.center)

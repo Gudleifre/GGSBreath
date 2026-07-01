@@ -47,11 +47,11 @@ struct StatisticsView: View {
                             .font(.system(size: 60, weight: .light))
                             .foregroundColor(.blueGGS)
                         
-                        Text("Статистика практик")
+                        Text("Practice Statistics")
                             .font(.sfRounded(size: 24, weight: .bold))
                             .foregroundColor(.whiteGGS)
                         
-                        Text("Здесь будет история сессий и минут осознанности.")
+                        Text("Your session history and mindfulness minutes will appear here.")
                             .font(.sfRounded(size: 14, weight: .medium))
                             .foregroundColor(.whiteGGS.opacity(0.5))
                             .multilineTextAlignment(.center)
@@ -62,7 +62,7 @@ struct StatisticsView: View {
                         let totalMinutes = history.reduce(0) { $0 + $1.durationInMinutes }
                         
                         VStack(spacing: 4) {
-                            Text("Всего минут осознанности")
+                            Text("Total mindfulness minutes")
                                 .font(.sfRounded(size: 16, weight: .medium))
                                 .foregroundColor(.whiteGGS.opacity(0.6))
                             Text("\(totalMinutes)")
@@ -78,7 +78,7 @@ struct StatisticsView: View {
                                 ForEach(weeklyStats) { day in
                                     VStack(spacing: 8) {
                                         
-                                        Text("\(day.totalMinutes)м")
+                                        Text("\(day.totalMinutes) min")
                                             .font(.sfRounded(size: 12, weight: .bold))
                                             .foregroundColor(.whiteGGS.opacity(0.8))
                                         

@@ -18,10 +18,10 @@ enum BreathingPhase: String {
     
     var localizedTitle: LocalizedStringKey {
         switch self {
-        case .inhale: return "Вдохните через нос"
-        case .holdIn: return "Задержка на вдохе"
-        case .exhale: return "Выдохните через рот"
-        case .holdOut: return "Задержка на выдохе"
+        case .inhale: "Inhale"
+        case .holdIn: "Hold (In)"
+        case .exhale: "Exhale"
+        case .holdOut: "Hold (Out)"
         }
     }
 }
@@ -60,22 +60,19 @@ class PracticeViewModel: ObservableObject {
     private func setupPracticeMetrics() {
         var targetMinutes: Double = 5.0
         
-        switch practice.title {
-        case "Спокойствие":
+        switch practice.kind {
+        case .calm:
             inhaleDuration = 4.0; holdInDuration = 7.0; exhaleDuration = 8.0; holdOutDuration = 0.0
-            targetMinutes = 5.0 
-        case "Энергия":
+            targetMinutes = 5.0
+        case .energy:
             inhaleDuration = 2.0; holdInDuration = 0.0; exhaleDuration = 1.0; holdOutDuration = 0.0
             targetMinutes = 3.0
-        case "Фокус":
+        case .focus:
             inhaleDuration = 4.0; holdInDuration = 4.0; exhaleDuration = 4.0; holdOutDuration = 4.0
             targetMinutes = 4.0
-        case "Сон":
+        case .sleep:
             inhaleDuration = 4.0; holdInDuration = 0.0; exhaleDuration = 8.0; holdOutDuration = 0.0
             targetMinutes = 10.0
-        default:
-            inhaleDuration = 4.0; holdInDuration = 4.0; exhaleDuration = 4.0; holdOutDuration = 0.0
-            targetMinutes = 5.0
         }
         
         let singleCycleDuration = inhaleDuration + holdInDuration + exhaleDuration + holdOutDuration
@@ -135,14 +132,14 @@ class PracticeViewModel: ObservableObject {
     
     func saveSession(context: ModelContext) {
         let newRecord = BreathingHistory(
-            durationInMinutes: Int(practice.duration.replacingOccurrences(of: " мин", with: "")) ?? 5,
-            practiceTitle: practice.title
+            durationInMinutes: practice.kind.durationMinutes,
+            practiceTitle: practice.kind.rawValue
         )
         
         context.insert(newRecord)
         
         try? context.save()
-        print("Сессия успешно сохранена в SwiftData!")
+        print("Session saved to SwiftData successfully.")
     }
     
     private func gameTick() {

@@ -113,8 +113,8 @@ struct SessionPracticeView: View {
                 VStack(spacing: 12) {
                     Text(
                         (viewModel.sessionState == .countdown || viewModel.sessionState == .pausedDuringCountdown)
-                        ? LocalizedStringKey("Приготовьтесь")
-                        : (viewModel.sessionState == .completed ? LocalizedStringKey("Отличная работа!") : viewModel.currentPhase.localizedTitle)
+                        ? "Get ready"
+                        : (viewModel.sessionState == .completed ? "Great work!" : viewModel.currentPhase.localizedTitle)
                     )
                     .font(.sfRounded(size: 20, weight: .bold)
                     )
@@ -122,7 +122,7 @@ struct SessionPracticeView: View {
                     .multilineTextAlignment(.center)
                     .id(viewModel.currentPhase)
                     
-                    Text("Цикл: \(viewModel.currentCycle) из \(viewModel.maxCycles)")
+                    Text("Cycle: \(viewModel.currentCycle) of \(viewModel.maxCycles)")
                         .font(.sfRounded(size: 16, weight: .medium))
                         .foregroundColor(.whiteGGS.opacity(0.7))
                         .opacity(viewModel.sessionState == .completed ? 0.0 : 1.0)

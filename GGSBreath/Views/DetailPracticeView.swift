@@ -51,7 +51,7 @@ struct DetailPracticeView: View {
                 
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Смысл:")
+                        Text("Purpose:")
                             .font(.sfRounded(size: 16, weight: .bold))
                             .foregroundColor(.whiteGGS)
                         Text(practice.purpose)
@@ -60,7 +60,7 @@ struct DetailPracticeView: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Техника дыхания:")
+                        Text("Breathing technique:")
                             .font(.sfRounded(size: 16, weight: .bold))
                             .foregroundColor(.whiteGGS)
                         Text(practice.technique)
@@ -76,7 +76,7 @@ struct DetailPracticeView: View {
                 Button(action: {
                     isPresentingSession = true
                 }) {
-                    Text("Дышать")
+                    Text("Breathe")
                         .font(.sfRounded(size: 24, weight: .bold))
                         .foregroundColor(.whiteGGS)
                         .frame(maxWidth: .infinity)

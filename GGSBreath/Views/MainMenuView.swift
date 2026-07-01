@@ -1,35 +1,9 @@
 import SwiftUI
 
-// MARK: - MainScreen
 struct MainMenuView: View {
     @State private var selectedPractice: BreathingPractice? = nil
     
-    let practices = [
-        BreathingPractice(
-            title: "Спокойствие", duration: "5 мин", cycles: "16 циклов",
-            purpose: "Помогает быстро снять тревогу и успокоить нервную систему",
-            technique: "Вдох на 4 сек, задержка на 7 сек, медленный выдох на 8 сек.",
-            color: .blueGGS
-        ),
-        BreathingPractice(
-            title: "Энергия", duration: "3 мин", cycles: "60 циклов",
-            purpose: "Вместо второй чашки кофе. Помогает проснуться или взбодриться.",
-            technique: "Активное дыхание (2 сек вдох — 1 сек выдох, быстрый цикл).",
-            color: .redGGS
-        ),
-        BreathingPractice(
-            title: "Фокус", duration: "4 мин", cycles: "15 циклов",
-            purpose: "Стабилизирует внимание, улучшает концентрацию",
-            technique: "Равный вдох, задержка, выдох и задержка — всё по 4 секунды.",
-            color: .purpleGGS
-        ),
-        BreathingPractice(
-            title: "Сон", duration: "10 мин", cycles: "50 циклов",
-            purpose: "Глубоко расслабляет тело и ум, отключает мысли и подготавливает ко сну.",
-            technique: "Равный вдох на 4 сек и удлиненный, медленный выдох на 8 сек.",
-            color: .darkBlueGGS
-        )
-    ]
+    let practices = PracticeKind.allCases.map { BreathingPractice(kind: $0) }
     
     var body: some View {
         VStack(spacing: 0) {
