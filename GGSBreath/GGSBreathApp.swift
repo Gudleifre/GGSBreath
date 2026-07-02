@@ -3,29 +3,27 @@ import SwiftData
 
 @main
 struct GGSBreathApp: App {
-    @State private var showSplash: Bool = true
-    @State private var selectedTab: Int = 0
-    
+    @State private var showSplash = true
+
     var body: some Scene {
         WindowGroup {
             ZStack {
-                TabView(selection: $selectedTab) {
+                TabView {
                     MainMenuView()
-                        .tabItem { Image(systemName: "lungs.fill") }
-                        .tag(0)
-                    
+                        .tabItem {
+                            Label("Practice", systemImage: "lungs.fill")
+                        }
+
                     StatisticsView()
-                        .tabItem { Image(systemName: "chart.bar.fill") }
-                        .tag(1)
+                        .tabItem {
+                            Label("Statistics", systemImage: "chart.bar.fill")
+                        }
                 }
                 .accentColor(.blueGGS)
                 .onAppear {
-                    let appearance = UITabBarAppearance()
-                    appearance.backgroundColor = UIColor.blackGGS.withAlphaComponent(0.4)
-                    
-                    UITabBar.appearance().standardAppearance = appearance
+                    configureTabBarAppearance()
                 }
-                
+
                 if showSplash {
                     SplashScreenView(onFinished: {
                         withAnimation(.easeOut(duration: 1.4)) {
@@ -38,10 +36,11 @@ struct GGSBreathApp: App {
         }
         .modelContainer(for: BreathingHistory.self)
     }
-}
 
-extension Font {
-    static func sfRounded(size: CGFloat, weight: Font.Weight = .regular) -> Font {
-        return .system(size: size, weight: weight, design: .rounded)
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.backgroundColor = UIColor.blackGGS.withAlphaComponent(0.4)
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }

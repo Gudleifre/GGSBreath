@@ -1,10 +1,8 @@
 import SwiftUI
 
 struct MainMenuView: View {
-    @State private var selectedPractice: BreathingPractice? = nil
-    
-    let practices = PracticeKind.allCases.map { BreathingPractice(kind: $0) }
-    
+    @State private var selectedPractice: PracticeKind?
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 2) {
@@ -14,16 +12,16 @@ struct MainMenuView: View {
             }
             .padding(.top, 20)
             .padding(.bottom, 30)
-            
+
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
-                    ForEach(practices) { practice in
-                        Button(action: {
-                            selectedPractice = practice
-                        }) {
-                            PracticeRowView(practice: practice)
+                    ForEach(PracticeKind.allCases) { kind in
+                        Button {
+                            selectedPractice = kind
+                        } label: {
+                            PracticeRowView(kind: kind)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -32,19 +30,19 @@ struct MainMenuView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.blackGGS.ignoresSafeArea())
-        .sheet(item: $selectedPractice) { practice in
-            DetailPracticeView(practice: practice)
+        .sheet(item: $selectedPractice) { kind in
+            DetailPracticeView(kind: kind)
         }
     }
 }
 
 struct PracticeRowView: View {
-    let practice: BreathingPractice
-    
+    let kind: PracticeKind
+
     var body: some View {
         HStack {
             Spacer()
-            Text(practice.title)
+            Text(kind.title)
                 .font(.sfRounded(size: 24, weight: .bold))
                 .foregroundColor(.whiteGGS)
             Spacer()
@@ -53,14 +51,14 @@ struct PracticeRowView: View {
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [
-                    practice.color,
-                    practice.color.opacity(0.4)
+                    kind.color,
+                    kind.color.opacity(0.4)
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
         .clipShape(Capsule())
-        .shadow(color: practice.color.opacity(0.15), radius: 10, x: 0, y: 6)
+        .shadow(color: kind.color.opacity(0.15), radius: 10, x: 0, y: 6)
     }
 }

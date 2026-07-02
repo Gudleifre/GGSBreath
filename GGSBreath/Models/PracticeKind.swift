@@ -1,13 +1,50 @@
 import SwiftUI
 
+struct BreathingPattern {
+    let inhale: Double
+    let holdIn: Double
+    let exhale: Double
+    let holdOut: Double
+    let targetMinutes: Double
+    
+    var cycleDuration: Double {
+        inhale + holdIn + exhale + holdOut
+    }
+    
+    var maxCycles: Int {
+        Int(round(targetMinutes * 60 / cycleDuration))
+    }
+    
+    var totalSeconds: Double {
+        cycleDuration * Double(maxCycles)
+    }
+}
+
 enum PracticeKind: String, CaseIterable, Identifiable {
     case calm
     case energy
     case focus
     case sleep
-
+    
     var id: String { rawValue }
-
+    
+    var pattern: BreathingPattern {
+        switch self {
+        case .calm:
+            BreathingPattern(inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, targetMinutes: 5)
+        case .energy:
+            BreathingPattern(inhale: 2, holdIn: 0, exhale: 1, holdOut: 0, targetMinutes: 3)
+        case .focus:
+            BreathingPattern(inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, targetMinutes: 4)
+        case .sleep:
+            BreathingPattern(inhale: 4, holdIn: 0, exhale: 8, holdOut: 0, targetMinutes: 10)
+        }
+    }
+    
+    var maxCycles: Int { pattern.maxCycles }
+    
+    var durationMinutes: Int { Int(pattern.targetMinutes) }
+    
     var title: LocalizedStringKey {
         switch self {
         case .calm: "Calm"
@@ -16,7 +53,7 @@ enum PracticeKind: String, CaseIterable, Identifiable {
         case .sleep: "Sleep"
         }
     }
-
+    
     var duration: LocalizedStringKey {
         switch self {
         case .calm: "5 min"
@@ -25,16 +62,7 @@ enum PracticeKind: String, CaseIterable, Identifiable {
         case .sleep: "10 min"
         }
     }
-
-    var cycles: LocalizedStringKey {
-        switch self {
-        case .calm: "16 cycles"
-        case .energy: "60 cycles"
-        case .focus: "15 cycles"
-        case .sleep: "50 cycles"
-        }
-    }
-
+    
     var purpose: LocalizedStringKey {
         switch self {
         case .calm:
@@ -47,7 +75,7 @@ enum PracticeKind: String, CaseIterable, Identifiable {
             "Deeply relaxes body and mind, quiets thoughts, and prepares you for sleep."
         }
     }
-
+    
     var technique: LocalizedStringKey {
         switch self {
         case .calm:
@@ -60,16 +88,7 @@ enum PracticeKind: String, CaseIterable, Identifiable {
             "Inhale for 4 sec and a long, slow exhale for 8 sec."
         }
     }
-
-    var durationMinutes: Int {
-        switch self {
-        case .calm: 5
-        case .energy: 3
-        case .focus: 4
-        case .sleep: 10
-        }
-    }
-
+    
     var color: Color {
         switch self {
         case .calm: .blueGGS
@@ -77,21 +96,5 @@ enum PracticeKind: String, CaseIterable, Identifiable {
         case .focus: .purpleGGS
         case .sleep: .darkBlueGGS
         }
-    }
-}
-
-struct BreathingPractice: Identifiable {
-    let id = UUID()
-    let kind: PracticeKind
-
-    var title: LocalizedStringKey { kind.title }
-    var duration: LocalizedStringKey { kind.duration }
-    var cycles: LocalizedStringKey { kind.cycles }
-    var purpose: LocalizedStringKey { kind.purpose }
-    var technique: LocalizedStringKey { kind.technique }
-    var color: Color { kind.color }
-
-    init(kind: PracticeKind) {
-        self.kind = kind
     }
 }

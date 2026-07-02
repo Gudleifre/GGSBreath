@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 import SwiftData
+import os
 
 enum SessionState {
     case countdown
@@ -26,13 +27,13 @@ enum BreathingPhase: String {
     }
 }
 
-class PracticeViewModel: ObservableObject {
+@MainActor
+final class PracticeViewModel: ObservableObject {
     
-    let practice: BreathingPractice
+    let kind: PracticeKind
     
     @Published var sessionState: SessionState = .countdown
     @Published var countdownCount: Int = 3
-    private var countdownTicks: Double = 0.0
     
     @Published var currentPhase: BreathingPhase = .inhale
     @Published var currentCycle: Int = 1
@@ -40,6 +41,7 @@ class PracticeViewModel: ObservableObject {
     @Published var totalSecondsRemaining: Int = 0
     @Published var phaseProgress: Double = 0.0
     
+    private var countdownTicks: Double = 0.0
     private var timer: AnyCancellable?
     private var totalTimeRemainingTicks: Double = 0.0
     private var phaseSecondsElapsed: Double = 0.0
@@ -50,42 +52,39 @@ class PracticeViewModel: ObservableObject {
     private var exhaleDuration: Double = 8.0
     private var holdOutDuration: Double = 0.0
     
-    var maxCycles: Int = 1
+    private(set) var maxCycles: Int = 1
     
-    init(practice: BreathingPractice) {
-        self.practice = practice
-        setupPracticeMetrics()
+    private static let logger = Logger(subsystem: "com.ggs.GGSBreath", category: "PracticeViewModel")
+    
+    init(kind: PracticeKind) {
+        self.kind = kind
+        applyPracticeMetrics()
     }
     
-    private func setupPracticeMetrics() {
-        var targetMinutes: Double = 5.0
-        
-        switch practice.kind {
-        case .calm:
-            inhaleDuration = 4.0; holdInDuration = 7.0; exhaleDuration = 8.0; holdOutDuration = 0.0
-            targetMinutes = 5.0
-        case .energy:
-            inhaleDuration = 2.0; holdInDuration = 0.0; exhaleDuration = 1.0; holdOutDuration = 0.0
-            targetMinutes = 3.0
-        case .focus:
-            inhaleDuration = 4.0; holdInDuration = 4.0; exhaleDuration = 4.0; holdOutDuration = 4.0
-            targetMinutes = 4.0
-        case .sleep:
-            inhaleDuration = 4.0; holdInDuration = 0.0; exhaleDuration = 8.0; holdOutDuration = 0.0
-            targetMinutes = 10.0
-        }
-        
-        let singleCycleDuration = inhaleDuration + holdInDuration + exhaleDuration + holdOutDuration
-        
-        let targetSeconds = targetMinutes * 60.0
-        
-        self.maxCycles = Int(round(targetSeconds / singleCycleDuration))
-        
-        self.totalTimeRemainingTicks = singleCycleDuration * Double(maxCycles)
-        self.totalSecondsRemaining = Int(ceil(totalTimeRemainingTicks))
+    private func applyPracticeMetrics() {
+        let pattern = kind.pattern
+        inhaleDuration = pattern.inhale
+        holdInDuration = pattern.holdIn
+        exhaleDuration = pattern.exhale
+        holdOutDuration = pattern.holdOut
+        maxCycles = pattern.maxCycles
+        totalTimeRemainingTicks = pattern.totalSeconds
+        totalSecondsRemaining = Int(ceil(totalTimeRemainingTicks))
+    }
+    
+    private func resetSessionProgress() {
+        applyPracticeMetrics()
+        sessionState = .countdown
+        countdownCount = 3
+        countdownTicks = 0.0
+        currentPhase = .inhale
+        phaseSecondsElapsed = 0.0
+        currentCycle = 1
+        phaseProgress = 0.0
     }
     
     func startSession() {
+        timer?.cancel()
         timer = Timer.publish(every: timeStep, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
@@ -94,6 +93,8 @@ class PracticeViewModel: ObservableObject {
     }
     
     func pauseSession() {
+        guard sessionState == .countdown || sessionState == .breathing else { return }
+        
         if sessionState == .countdown {
             sessionState = .pausedDuringCountdown
         } else {
@@ -104,6 +105,8 @@ class PracticeViewModel: ObservableObject {
     }
     
     func resumeSession() {
+        guard sessionState == .paused || sessionState == .pausedDuringCountdown else { return }
+        
         if sessionState == .pausedDuringCountdown {
             sessionState = .countdown
         } else {
@@ -115,59 +118,72 @@ class PracticeViewModel: ObservableObject {
     
     func restartSession() {
         timer?.cancel()
-        sessionState = .countdown
-        countdownCount = 3
-        countdownTicks = 0.0
-        currentPhase = .inhale
-        phaseSecondsElapsed = 0.0
-        currentCycle = 1
-        phaseProgress = 0.0
+        resetSessionProgress()
         startSession()
         HapticManager.shared.triggerImpact(style: .medium)
     }
     
     func endSession() {
         timer?.cancel()
+        timer = nil
+    }
+    
+    func handleScenePhase(_ phase: ScenePhase) {
+        guard phase == .background else { return }
+        pauseSession()
     }
     
     func saveSession(context: ModelContext) {
         let newRecord = BreathingHistory(
-            durationInMinutes: practice.kind.durationMinutes,
-            practiceTitle: practice.kind.rawValue
+            durationInMinutes: kind.durationMinutes,
+            practiceTitle: kind.rawValue
         )
         
         context.insert(newRecord)
         
-        try? context.save()
-        print("Session saved to SwiftData successfully.")
+        do {
+            try context.save()
+        } catch {
+            Self.logger.error("Failed to save session: \(error.localizedDescription)")
+        }
     }
     
     private func gameTick() {
-        if sessionState == .countdown {
-            countdownTicks += timeStep
-            if countdownTicks >= 1.0 {
-                if countdownCount > 1 {
-                    countdownCount -= 1
-                    countdownTicks = 0.0
-                    HapticManager.shared.triggerImpact(style: .light)
-                } else {
-                    sessionState = .breathing
-                    countdownCount = 0
-                    phaseSecondsElapsed = 0.0
-                    phaseProgress = 0.0
-                    currentPhase = .inhale
-                    HapticManager.shared.triggerImpact(style: .medium)
-                }
-            }
-            return
+        switch sessionState {
+        case .countdown:
+            tickCountdown()
+        case .breathing:
+            tickBreathing()
+        case .paused, .pausedDuringCountdown, .completed:
+            break
         }
+    }
+    
+    private func tickCountdown() {
+        countdownTicks += timeStep
+        guard countdownTicks >= 1.0 else { return }
         
+        if countdownCount > 1 {
+            countdownCount -= 1
+            countdownTicks = 0.0
+            HapticManager.shared.triggerImpact(style: .light)
+        } else {
+            sessionState = .breathing
+            countdownCount = 0
+            phaseSecondsElapsed = 0.0
+            phaseProgress = 0.0
+            currentPhase = .inhale
+            HapticManager.shared.triggerImpact(style: .medium)
+        }
+    }
+    
+    private func tickBreathing() {
         if totalTimeRemainingTicks > timeStep {
             totalTimeRemainingTicks -= timeStep
         } else {
             totalTimeRemainingTicks = 0.0
         }
-        self.totalSecondsRemaining = Int(ceil(totalTimeRemainingTicks))
+        totalSecondsRemaining = Int(ceil(totalTimeRemainingTicks))
         
         phaseSecondsElapsed += timeStep
         let targetDuration = currentPhaseDuration()
@@ -183,10 +199,10 @@ class PracticeViewModel: ObservableObject {
     
     private func currentPhaseDuration() -> Double {
         switch currentPhase {
-        case .inhale: return inhaleDuration
-        case .holdIn: return holdInDuration
-        case .exhale: return exhaleDuration
-        case .holdOut: return holdOutDuration
+        case .inhale: inhaleDuration
+        case .holdIn: holdInDuration
+        case .exhale: exhaleDuration
+        case .holdOut: holdOutDuration
         }
     }
     
@@ -195,13 +211,15 @@ class PracticeViewModel: ObservableObject {
         
         switch currentPhase {
         case .inhale:
-            if holdInDuration > 0 { currentPhase = .holdIn }
-            else { currentPhase = .exhale }
+            currentPhase = holdInDuration > 0 ? .holdIn : .exhale
         case .holdIn:
             currentPhase = .exhale
         case .exhale:
-            if holdOutDuration > 0 { currentPhase = .holdOut }
-            else { advanceCycle() }
+            if holdOutDuration > 0 {
+                currentPhase = .holdOut
+            } else {
+                advanceCycle()
+            }
         case .holdOut:
             advanceCycle()
         }
@@ -214,6 +232,7 @@ class PracticeViewModel: ObservableObject {
         } else {
             sessionState = .completed
             timer?.cancel()
+            timer = nil
             HapticManager.shared.triggerImpact(style: .heavy)
         }
     }
