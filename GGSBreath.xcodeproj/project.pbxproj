@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		F71159A22FF6A50D003D2FCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F74750A62F9A44DB00A708CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F74750AD2F9A44DB00A708CE;
+			remoteInfo = GGSBreath;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		F711599E2FF6A50D003D2FCC /* GGSBreathTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GGSBreathTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F74750AE2F9A44DB00A708CE /* GGSBreath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GGSBreath.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +32,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F711599F2FF6A50D003D2FCC /* GGSBreathTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GGSBreathTests;
+			sourceTree = "<group>";
+		};
 		F74750B02F9A44DB00A708CE /* GGSBreath */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F711599B2FF6A50D003D2FCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F74750AB2F9A44DB00A708CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				F74750B02F9A44DB00A708CE /* GGSBreath */,
+				F711599F2FF6A50D003D2FCC /* GGSBreathTests */,
 				F74750AF2F9A44DB00A708CE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				F74750AE2F9A44DB00A708CE /* GGSBreath.app */,
+				F711599E2FF6A50D003D2FCC /* GGSBreathTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F711599D2FF6A50D003D2FCC /* GGSBreathTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F71159A62FF6A50D003D2FCC /* Build configuration list for PBXNativeTarget "GGSBreathTests" */;
+			buildPhases = (
+				F711599A2FF6A50D003D2FCC /* Sources */,
+				F711599B2FF6A50D003D2FCC /* Frameworks */,
+				F711599C2FF6A50D003D2FCC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F71159A32FF6A50D003D2FCC /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F711599F2FF6A50D003D2FCC /* GGSBreathTests */,
+			);
+			name = GGSBreathTests;
+			packageProductDependencies = (
+			);
+			productName = GGSBreathTests;
+			productReference = F711599E2FF6A50D003D2FCC /* GGSBreathTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F74750AD2F9A44DB00A708CE /* GGSBreath */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F74750B92F9A44DC00A708CE /* Build configuration list for PBXNativeTarget "GGSBreath" */;
@@ -93,6 +141,10 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					F711599D2FF6A50D003D2FCC = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = F74750AD2F9A44DB00A708CE;
+					};
 					F74750AD2F9A44DB00A708CE = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -114,11 +166,19 @@
 			projectRoot = "";
 			targets = (
 				F74750AD2F9A44DB00A708CE /* GGSBreath */,
+				F711599D2FF6A50D003D2FCC /* GGSBreathTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F711599C2FF6A50D003D2FCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F74750AC2F9A44DB00A708CE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -129,6 +189,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F711599A2FF6A50D003D2FCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F74750AA2F9A44DB00A708CE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,7 +205,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F71159A32FF6A50D003D2FCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F74750AD2F9A44DB00A708CE /* GGSBreath */;
+			targetProxy = F71159A22FF6A50D003D2FCC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		F71159A42FF6A50D003D2FCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVF2YX5V43;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ggs.GGSBreathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GGSBreath.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GGSBreath";
+			};
+			name = Debug;
+		};
+		F71159A52FF6A50D003D2FCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TVF2YX5V43;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ggs.GGSBreathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GGSBreath.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GGSBreath";
+			};
+			name = Release;
+		};
 		F74750B72F9A44DC00A708CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -331,6 +448,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F71159A62FF6A50D003D2FCC /* Build configuration list for PBXNativeTarget "GGSBreathTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F71159A42FF6A50D003D2FCC /* Debug */,
+				F71159A52FF6A50D003D2FCC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F74750A92F9A44DB00A708CE /* Build configuration list for PBXProject "GGSBreath" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

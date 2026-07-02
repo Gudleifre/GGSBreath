@@ -5,23 +5,23 @@ struct SessionPracticeView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
-
+    
     @State private var circlesOpacity: Double = 0.0
     @State private var circlesScale: CGFloat = 0.8
     @State private var showCheckmark = false
-
+    
     private var isCountdownPhase: Bool {
         viewModel.sessionState == .countdown || viewModel.sessionState == .pausedDuringCountdown
     }
-
+    
     private var isPaused: Bool {
         viewModel.sessionState == .paused || viewModel.sessionState == .pausedDuringCountdown
     }
-
+    
     var body: some View {
         ZStack {
             viewModel.kind.color.ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 topBar
                 Spacer()
@@ -29,7 +29,7 @@ struct SessionPracticeView: View {
                 Spacer()
                 infoBlock
                 Spacer()
-
+                
                 if viewModel.sessionState == .completed {
                     doneButton
                 } else {
@@ -48,7 +48,7 @@ struct SessionPracticeView: View {
             viewModel.handleScenePhase(newPhase)
         }
     }
-
+    
     private var topBar: some View {
         HStack {
             Text(viewModel.formatTotalTime())
@@ -56,9 +56,9 @@ struct SessionPracticeView: View {
                 .foregroundColor(.whiteGGS)
                 .opacity(viewModel.sessionState == .completed ? 0.0 : 1.0)
                 .animation(.easeInOut(duration: 0.5), value: viewModel.sessionState)
-
+            
             Spacer()
-
+            
             Button {
                 viewModel.endSession()
                 dismiss()
@@ -75,7 +75,7 @@ struct SessionPracticeView: View {
         .padding(.horizontal, 24)
         .padding(.top, 16)
     }
-
+    
     private var centerContent: some View {
         ZStack {
             if isCountdownPhase {
@@ -84,14 +84,14 @@ struct SessionPracticeView: View {
                     .foregroundColor(.whiteGGS)
                     .transition(.scale.combined(with: .opacity))
             }
-
+            
             if showCheckmark {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 100, weight: .light))
                     .foregroundColor(.whiteGGS)
                     .transition(.scale(scale: 0.8).combined(with: .opacity))
             }
-
+            
             if !isCountdownPhase && viewModel.sessionState != .completed {
                 breathingCircles
             }
@@ -111,21 +111,21 @@ struct SessionPracticeView: View {
             }
         }
     }
-
+    
     private var breathingCircles: some View {
         ZStack {
             Circle()
                 .fill(Color.whiteGGS.opacity(0.15))
                 .frame(width: 302, height: 302)
-
+            
             Circle()
                 .fill(Color.whiteGGS.opacity(0.25))
                 .frame(width: currentMiddleCircleSize(), height: currentMiddleCircleSize())
-
+            
             Circle()
                 .fill(Color.whiteGGS.opacity(isHolding() ? 0.8 : 1.0))
                 .frame(width: 96, height: 96)
-
+            
             Circle()
                 .trim(from: 0, to: CGFloat(currentRingProgress()))
                 .stroke(
@@ -144,7 +144,7 @@ struct SessionPracticeView: View {
             }
         }
     }
-
+    
     private var infoBlock: some View {
         VStack(spacing: 12) {
             Text(sessionStatusTitle)
@@ -152,7 +152,7 @@ struct SessionPracticeView: View {
                 .foregroundColor(.whiteGGS)
                 .multilineTextAlignment(.center)
                 .id(viewModel.currentPhase)
-
+            
             Text("Cycle: \(viewModel.currentCycle) of \(viewModel.maxCycles)")
                 .font(.sfRounded(size: 16, weight: .medium))
                 .foregroundColor(.whiteGGS.opacity(0.7))
@@ -161,7 +161,7 @@ struct SessionPracticeView: View {
         }
         .padding(.horizontal, 40)
     }
-
+    
     private var sessionStatusTitle: LocalizedStringKey {
         if isCountdownPhase {
             "Get ready"
@@ -171,7 +171,7 @@ struct SessionPracticeView: View {
             viewModel.currentPhase.localizedTitle
         }
     }
-
+    
     private var controlPanel: some View {
         HStack(spacing: 40) {
             Button {
@@ -188,7 +188,7 @@ struct SessionPracticeView: View {
                     .clipShape(Circle())
             }
             .accessibilityLabel("Restart session")
-
+            
             Button {
                 if isPaused {
                     viewModel.resumeSession()
@@ -204,12 +204,12 @@ struct SessionPracticeView: View {
                     .clipShape(Circle())
             }
             .accessibilityLabel(isPaused ? "Resume session" : "Pause session")
-
+            
             Spacer().frame(width: 56, height: 56)
         }
         .padding(.bottom, 40)
     }
-
+    
     private var doneButton: some View {
         Button {
             viewModel.endSession()
@@ -227,11 +227,11 @@ struct SessionPracticeView: View {
         .padding(.bottom, 40)
         .transition(.opacity)
     }
-
+    
     private func currentMiddleCircleSize() -> CGFloat {
         let minSize: CGFloat = 96
         let maxSize: CGFloat = 302
-
+        
         switch viewModel.currentPhase {
         case .inhale:
             return minSize + (maxSize - minSize) * CGFloat(viewModel.phaseProgress)
@@ -243,14 +243,14 @@ struct SessionPracticeView: View {
             return minSize
         }
     }
-
+    
     private func currentRingProgress() -> Double {
         if viewModel.currentPhase == .holdIn || viewModel.currentPhase == .holdOut {
             return viewModel.phaseProgress
         }
         return 0.0
     }
-
+    
     private func isHolding() -> Bool {
         viewModel.currentPhase == .holdIn || viewModel.currentPhase == .holdOut
     }

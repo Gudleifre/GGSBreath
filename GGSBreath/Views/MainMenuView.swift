@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainMenuView: View {
     @State private var selectedPractice: PracticeKind?
-
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 2) {
@@ -12,7 +12,7 @@ struct MainMenuView: View {
             }
             .padding(.top, 20)
             .padding(.bottom, 30)
-
+            
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
                     ForEach(PracticeKind.allCases) { kind in
@@ -38,7 +38,7 @@ struct MainMenuView: View {
 
 struct PracticeRowView: View {
     let kind: PracticeKind
-
+    
     var body: some View {
         HStack {
             Spacer()

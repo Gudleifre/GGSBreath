@@ -4,7 +4,7 @@ import SwiftData
 @main
 struct GGSBreathApp: App {
     @State private var showSplash = true
-
+    
     var body: some Scene {
         WindowGroup {
             ZStack {
@@ -13,7 +13,7 @@ struct GGSBreathApp: App {
                         .tabItem {
                             Label("Practice", systemImage: "lungs.fill")
                         }
-
+                    
                     StatisticsView()
                         .tabItem {
                             Label("Statistics", systemImage: "chart.bar.fill")
@@ -23,7 +23,7 @@ struct GGSBreathApp: App {
                 .onAppear {
                     configureTabBarAppearance()
                 }
-
+                
                 if showSplash {
                     SplashScreenView(onFinished: {
                         withAnimation(.easeOut(duration: 1.4)) {
@@ -36,7 +36,7 @@ struct GGSBreathApp: App {
         }
         .modelContainer(for: BreathingHistory.self)
     }
-
+    
     private func configureTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = UIColor.blackGGS.withAlphaComponent(0.4)

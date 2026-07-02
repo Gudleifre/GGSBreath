@@ -4,7 +4,7 @@ struct DetailPracticeView: View {
     @State private var isPresentingSession = false
     let kind: PracticeKind
     @Environment(\.dismiss) private var dismiss
-
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -13,7 +13,7 @@ struct DetailPracticeView: View {
                 endPoint: .center
             )
             .ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 HStack {
                     Button(action: { dismiss() }) {
@@ -27,14 +27,14 @@ struct DetailPracticeView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
-
+                
                 Text(kind.title)
                     .font(.sfRounded(size: 36, weight: .bold))
                     .foregroundColor(.whiteGGS)
                     .padding(.top, 60)
-
+                
                 Spacer()
-
+                
                 HStack(spacing: 6) {
                     Text(kind.duration)
                     Text("•")
@@ -42,14 +42,14 @@ struct DetailPracticeView: View {
                 }
                 .font(.sfRounded(size: 16, weight: .medium))
                 .foregroundColor(.whiteGGS)
-
+                
                 Rectangle()
                     .fill(Color.whiteGGS.opacity(0.2))
                     .frame(height: 1)
                     .padding(.horizontal, 40)
                     .padding(.top, 20)
                     .padding(.bottom, 20)
-
+                
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Purpose:")
@@ -59,7 +59,7 @@ struct DetailPracticeView: View {
                             .font(.sfRounded(size: 16, weight: .regular))
                             .foregroundColor(.whiteGGS.opacity(0.8))
                     }
-
+                    
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Breathing technique:")
                             .font(.sfRounded(size: 16, weight: .bold))
@@ -71,9 +71,9 @@ struct DetailPracticeView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 40)
-
+                
                 Spacer()
-
+                
                 Button {
                     isPresentingSession = true
                 } label: {
