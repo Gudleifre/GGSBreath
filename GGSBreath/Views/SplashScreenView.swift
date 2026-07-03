@@ -47,7 +47,9 @@ struct SplashScreenView: View {
                 isAnimating = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.9) {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 1_900_000_000)
+                
                 onFinished()
             }
         }

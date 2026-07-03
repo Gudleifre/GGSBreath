@@ -104,7 +104,9 @@ struct SessionPracticeView: View {
                 circlesOpacity = 0.0
                 circlesScale = 0.3
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 1_200_000_000)
                 withAnimation(.easeOut(duration: 0.8)) {
                     showCheckmark = true
                 }
