@@ -8,7 +8,7 @@ A modern, minimalistic iOS application designed for breathing practices and mind
 
 | Breathing Session | Core Features & UI |
 | --- | --- |
-| <img width="500" height="1087" alt="Simulator Screen Recording - iPhone 17 Pro - 2026-07-05 at 20 23 51" src="https://github.com/user-attachments/assets/06220584-a87d-40ba-9318-0176f52165d9" /> | <img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-05 at 20 43 38" src="https://github.com/user-attachments/assets/2dab9651-1927-41fe-8baf-b9edc4fb358e" /> |
+| <img width="800" height="1739" alt="GGSBreath focus" src="https://github.com/user-attachments/assets/c991cdd4-e613-439f-8ca0-66394ccc28ac" /> | <img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-05 at 21 00 29" src="https://github.com/user-attachments/assets/467b4442-43d5-4e5b-9dab-0a1fed41376a" /> |
 
 ---
 
@@ -42,4 +42,3 @@ To run the project locally:
 1. Clone the repository: `git clone https://github.com/Gudleifre/GGSBreath.git`
 2. Open `GGSBreath.xcodeproj` in Xcode.
 3. Build and run on your simulator or iOS device.
-
