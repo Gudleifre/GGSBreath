@@ -8,7 +8,7 @@ A modern, minimalistic iOS application designed for breathing practices and mind
 
 | Breathing Session | Core Features & UI |
 | --- | --- |
-| <img width="480" height="1044" alt="GGSBreath focus" src="https://github.com/user-attachments/assets/00a05312-abc1-4c58-9d50-e87d3122b36f" /> | <img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-05 at 21 00 29" src="https://github.com/user-attachments/assets/467b4442-43d5-4e5b-9dab-0a1fed41376a" /> |
+| <img src="https://github.com/user-attachments/assets/00a05312-abc1-4c58-9d50-e87d3122b36f" width="100%" alt="GGSBreath focus" /> | <img src="https://github.com/user-attachments/assets/467b4442-43d5-4e5b-9dab-0a1fed41376a" width="100%" alt="Simulator Screenshot" /> |
 
 ---
 
