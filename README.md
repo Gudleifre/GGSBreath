@@ -28,7 +28,6 @@ This project is built using the latest Apple technologies and modern development
 
 * **Interactive Breathing Guides:** Beautifully animated UI synced with inhalation/exhalation phases.
 * **Smart Progress Tracking:** Comprehensive statistics dashboard powered by SwiftData.
-* **Habit Mechanics:** Features designed to help users build a consistent daily routine.
 * **Designed in Figma:** Every element of the UI/UX was carefully planned for optimal user experience.
 
 ---
