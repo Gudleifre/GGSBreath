@@ -4,7 +4,7 @@ A modern, minimalistic iOS application designed for breathing practices and mind
 
 ---
 
-## 📱 Visuals
+## Visuals
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/00a05312-abc1-4c58-9d50-e87d3122b36f" width="280" alt="GGSBreath focus" style="margin-right: 10px;" />
@@ -19,7 +19,7 @@ This project is built using the latest Apple technologies and modern development
 
 * **UI Framework:** SwiftUI (100% programmatic, declarative UI with smooth animations).
 * **Architecture:** MVVM (Model-View-ViewModel) for clean separation of concerns and testability.
-* **Local Storage:** SwiftData — leveraging Apple's newest persistence framework to track and store user breathing statistics and session history.
+* **Local Storage:** SwiftData – leveraging Apple's newest persistence framework to track and store user breathing statistics and session history.
 * **Concurrency:** Swift Concurrency (async/await) for seamless, non-blocking background operations and precise timer execution.
 
 ---
