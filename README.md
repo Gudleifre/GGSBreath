@@ -1,4 +1,4 @@
-# GGSBreath 🫁
+# GGSBreath
 
 A modern, minimalistic iOS application designed for breathing practices and mindfulness. The app helps users manage stress, improve focus, and track their daily habits through intuitive breathing exercises.
 
@@ -13,7 +13,7 @@ A modern, minimalistic iOS application designed for breathing practices and mind
 
 ---
 
-## 🛠 Tech Stack & Architecture
+## Tech Stack & Architecture
 
 This project is built using the latest Apple technologies and modern development practices:
 
@@ -24,7 +24,7 @@ This project is built using the latest Apple technologies and modern development
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 * **Interactive Breathing Guides:** Beautifully animated UI synced with inhalation/exhalation phases.
 * **Smart Progress Tracking:** Comprehensive statistics dashboard powered by SwiftData.
@@ -32,7 +32,7 @@ This project is built using the latest Apple technologies and modern development
 
 ---
 
-## 📋 Requirements & Installation
+## Requirements & Installation
 
 * iOS 17.0+
 * Xcode 15.0+
